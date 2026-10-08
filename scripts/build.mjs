@@ -36,5 +36,5 @@ for (const name of dependencies) {
   if (!license) throw Error("License missing: " + name);
   licenses += `--- ${name} ${p.version} ---\n${license}\n\n`;
 }
-await writeFile("vendor/LICENSES.txt", licenses);
+await writeFile("vendor/LICENSES.txt", licenses.trimEnd() + "\n");
 console.log("Bundled local worker and licenses; no runtime CDN needed.");
