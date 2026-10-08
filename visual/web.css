@@ -1,0 +1,204 @@
+.visual-workspace {
+  padding: 32px 30px;
+  background: #fafbfc;
+}
+.visual-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+.visual-head h1 {
+  font-size: 26px;
+  letter-spacing: -1px;
+  margin: 12px 0;
+}
+.visual-head p {
+  font-size: 12px;
+  color: #9396a2;
+  line-height: 1.9;
+}
+.visual-download {
+  display: block;
+  white-space: nowrap;
+}
+.visual-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin: 22px 0;
+}
+.visual-step {
+  padding: 17px;
+  border: 1px solid #e6e7ed;
+  border-radius: 8px;
+  background: #fff;
+}
+.visual-step strong {
+  font-size: 12px;
+  font-weight: 600;
+}
+.visual-step strong span {
+  color: #9c95bd;
+  font-size: 10px;
+  margin-right: 8px;
+}
+.visual-step p {
+  font-size: 11px;
+  line-height: 1.9;
+  color: #9c9faa;
+  margin: 9px 0 0;
+}
+.shop-open-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 18px 0;
+}
+.shop-open-row label {
+  font-size: 11px;
+  color: #868b97;
+}
+.shop-open-row input {
+  flex: 1;
+  min-width: 180px;
+  border: 1px solid #e4e6ed;
+  background: white;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 12px;
+}
+.shop-open-row button {
+  font-size: 11px;
+}
+.visual-status {
+  font-size: 11px;
+  color: #8a7fa7;
+  min-height: 20px;
+  margin: 10px 0;
+}
+.visual-demo-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 18px;
+  background: white;
+  border: 1px solid #e5e7ef;
+  border-bottom: 0;
+  border-radius: 9px 9px 0 0;
+}
+.visual-demo-bar strong {
+  font-size: 12px;
+}
+.visual-demo-bar small {
+  font-size: 10px;
+  color: #a4a6b0;
+  margin-left: 12px;
+}
+.visual-demo-bar .devices {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.visual-demo-bar button {
+  font-size: 10px;
+  border: 1px solid #e7e5ed;
+  border-radius: 5px;
+  padding: 6px 9px;
+  background: #fff;
+  color: #9a96a5;
+  cursor: pointer;
+}
+.visual-demo-bar button.active {
+  color: #7f71b8;
+  background: #f5f2ff;
+}
+.visual-frame-wrap {
+  border: 1px solid #e5e7ef;
+  background: #eef0f5;
+  overflow: auto;
+  border-radius: 0 0 9px 9px;
+  text-align: center;
+}
+.visual-frame-wrap iframe {
+  display: block;
+  border: 0;
+  width: 100%;
+  height: 980px;
+  margin: 0 auto;
+  background: white;
+}
+.visual-install {
+  margin: 22px 0;
+  background: white;
+  border: 1px solid #e6e7ed;
+  border-radius: 8px;
+  padding: 18px;
+  color: #8d909c;
+  font-size: 12px;
+  line-height: 2;
+}
+.visual-install summary {
+  font-size: 12px;
+  cursor: pointer;
+  color: #666476;
+}
+.visual-install ol {
+  padding-left: 20px;
+}
+.visual-install code {
+  font-size: 11px;
+  color: #837696;
+}
+.visual-install .hint {
+  font-size: 11px;
+  color: #a4a2ad;
+}
+.visual-roadmap {
+  font-size: 11px;
+  color: #a4a6b0;
+  line-height: 1.9;
+  margin-top: 20px;
+}
+@media (max-width: 700px) {
+  .visual-workspace {
+    padding: 25px 16px;
+  }
+  .visual-head {
+    flex-direction: column;
+  }
+  .visual-head h1 {
+    font-size: 23px;
+  }
+  .visual-steps {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+  .visual-step {
+    padding: 12px;
+  }
+  .visual-demo-bar {
+    flex-wrap: wrap;
+    padding: 12px;
+  }
+  .visual-demo-bar small {
+    display: block;
+    margin: 5px 0 0;
+  }
+  .visual-demo-bar .devices {
+    width: 100%;
+  }
+  .visual-frame-wrap iframe {
+    min-width: 330px;
+  }
+  .shop-open-row input {
+    flex-basis: 100%;
+  }
+}
+@media (max-width: 700px) {
+  .visual-frame-wrap iframe {
+    height: 680px;
+  }
+}

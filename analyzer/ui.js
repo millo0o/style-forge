@@ -273,6 +273,7 @@ function showResult(data) {
   );
   $("warnings-section").hidden = !data.warnings.length;
   $("export-analysis").disabled = false;
+  $("export-visual-map").disabled = false;
   status(
     `${data.totalFiles}개 파일 중 ${data.files.length}개 소스 분석 완료 · 외부 전송 없음`,
   );
@@ -401,14 +402,38 @@ $("export-analysis").addEventListener("click", () => {
     );
   }
 });
+$("export-visual-map").addEventListener("click", () => {
+  if (!result) return;
+  download(
+    JSON.stringify(
+      {
+        version: "1.2-analysis",
+        files: result.files.map(({ path, type }) => ({ path, type })),
+        rules: result.rules.map(({ selector, file, line, context }) => ({
+          selector,
+          file,
+          line,
+          context,
+        })),
+      },
+      null,
+      2,
+    ),
+    "style-forge-visual-map.json",
+    "application/json",
+  );
+});
+// Shared workspace navigation preserves each tool's in-memory state.
 for (const b of document.querySelectorAll("[data-workspace]"))
   b.addEventListener("click", () => {
-    const analyzer = b.dataset.workspace === "analyzer";
-    document.querySelector(".studio").hidden = analyzer;
-    document.querySelector(".workspace-bar").hidden = analyzer;
-    $("skin-analyzer").hidden = !analyzer;
-    $("save-project").hidden = analyzer;
-    $("download-top").hidden = analyzer;
+    const workspace = b.dataset.workspace,
+      designer = workspace === "designer";
+    document.querySelector(".studio").hidden = !designer;
+    document.querySelector(".workspace-bar").hidden = !designer;
+    $("skin-analyzer").hidden = workspace !== "analyzer";
+    $("visual-workspace").hidden = workspace !== "visual";
+    $("save-project").hidden = !designer;
+    $("download-top").hidden = !designer;
     for (const tab of document.querySelectorAll("[data-workspace]")) {
       tab.classList.toggle("active", tab === b);
       tab.setAttribute("aria-selected", String(tab === b));

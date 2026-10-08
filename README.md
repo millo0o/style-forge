@@ -65,3 +65,29 @@ CHROMIUM_PATH=/usr/bin/chromium npm run test:browser
 브라우저 테스트에는 Chromium이 필요합니다. `CHROMIUM_PATH`로 실행파일 위치를 지정합니다. 실제 백업은 저장소에 커밋하지 않습니다. 별도 로컬 샘플을 함께 검증하려면 두 테스트 명령에 `STYLE_FORGE_SAMPLE=/절대경로/백업.tar.gz`를 지정합니다. 샘플이 없으면 실제 백업 테스트 1개는 명시적으로 skip됩니다. `test-results/`의 화면 캡처는 Git에서 제외됩니다.
 
 구조·확장 경계: [분석기 설계](docs/ANALYZER_ARCHITECTURE.md). 실제 백업의 검증 결과·제약: [v1.1 검증 보고서](docs/V1_1_VALIDATION.md).
+
+## v1.2 — 클릭 비주얼 편집기
+
+**비주얼 편집기** 탭에서 샘플 쇼핑몰의 글씨·버튼·영역을 클릭해 스타일을 조절할 수 있습니다. 실제 쇼핑몰은 MV3 확장을 한 번 설치한 후 쇼핑몰 탭에서 실행합니다.
+
+1. 앱의 **Chrome 확장 다운로드**로 ZIP을 내려받아 압축을 풉니다.
+2. Chrome의 `chrome://extensions` → 개발자 모드 → 압축해제된 확장 프로그램 로드 → `manifest.json`이 있는 폴더를 선택합니다.
+3. 쇼핑몰을 열고 확장 메뉴에서 STYLE FORGE를 클릭합니다.
+4. 글씨/버튼을 선택하고 폰트·색상·여백·크기·테두리를 바꿉니다. 상위 영역도 선택할 수 있습니다.
+5. 대상은 기본적으로 선택 요소만입니다. 같은 class 범위를 선택하면 대상 개수를 확인하세요. 모바일/데스크톱용 CSS도 분리할 수 있습니다.
+6. 스킨 분석 탭의 **비주얼 연결 JSON**을 다운로드해 확장 패널에 불러오면 현재 DOM과 일치하는 CSS 파일·줄 후보를 표시합니다. 전체 분석 JSON도 지원합니다.
+7. 변경사항 검토·원본 비교·undo/redo 후 CSS를 복사/다운로드합니다. 기존 VS Code·FTP-simple 작업에 별도 override CSS로 연결합니다.
+8. 편집 저장/불러오기는 페이지 origin+pathname별 브라우저 로컬 저장입니다. 편집 JSON으로 백업·복원할 수도 있습니다.
+
+편집기의 임시 적용은 **서버 저장이 아닙니다**. 닫기·새로고침·페이지 이동 시 제거되며, 저장한 편집은 확장을 실행하고 불러오기 버튼으로 복원합니다. FTP 자동 반영은 후속 범위입니다. iframe/Shadow DOM 내부와 Chrome 제한 페이지는 현재 직접 편집하지 않습니다. 외부 CSS 규칙은 CORS로 조회가 제한될 수 있습니다. 위치 기반 선택자와 인라인 !important는 배포 전에 검토하세요. 원본 파일을 자동 수정하지 않고 별도 CSS를 생성합니다.
+
+개발 시 `npm run build`가 편집 코어·확장 content 번들·설치 ZIP을 함께 갱신합니다. 초기 권한은 `activeTab`, `scripting`, `storage`뿐이며 전체 사이트 host 권한이나 FTP 자격 증명을 요청하지 않습니다.
+
+```sh
+npm run test:visual
+npm run test:extension
+```
+
+비주얼 테스트는 실제 Chromium에서 체험 화면과 공통 편집 코어를 검증합니다. 확장 테스트는 관리자 정책이 설치를 막으면 **SKIP**을 명시하며 통과로 간주하지 않습니다. 이 클라우드 환경에서는 확장 설치가 정책으로 차단되어 실제 확장 런타임 검증이 남습니다.
+
+설계와 후속 FTP 연결 계획: [v1.2 구조](docs/VISUAL_EDITOR_ARCHITECTURE.md), [FTP 커넥터 계획](docs/FTP_CONNECTOR_PLAN.md), [검증 보고서](docs/V1_2_VALIDATION.md).

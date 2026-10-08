@@ -104,13 +104,11 @@ try {
       Object.entries(sources).map(([p, t]) => [p, strToU8(t)]),
     ),
   );
-  await page
-    .locator("#archive-input")
-    .setInputFiles({
-      name: "skin.zip",
-      mimeType: "application/zip",
-      buffer: Buffer.from(zip),
-    });
+  await page.locator("#archive-input").setInputFiles({
+    name: "skin.zip",
+    mimeType: "application/zip",
+    buffer: Buffer.from(zip),
+  });
   await page.waitForFunction(() =>
     document
       .getElementById("analysis-status")
@@ -177,18 +175,29 @@ try {
   const reportJSON = JSON.parse(report);
   assert.equal(reportJSON.stats.html, 2);
   assert(!Object.hasOwn(reportJSON.files[0], "content"));
+  const visualMapEvent = page.waitForEvent("download");
+  await page.locator("#export-visual-map").click();
+  const visualMapDownload = await visualMapEvent;
+  let visualMapText = "";
+  for await (const chunk of await visualMapDownload.createReadStream())
+    visualMapText += chunk;
+  const visualMap = JSON.parse(visualMapText);
+  assert.equal(visualMap.version, "1.2-analysis");
+  assert(
+    visualMap.rules.some((r) => r.selector === ".box .btn" && r.line === 2),
+  );
+  assert(!Object.hasOwn(visualMap.rules[0], "matches"));
+
   const sourceDownload = page.waitForEvent("download");
   await page.locator("#download-source").click();
   assert.equal((await sourceDownload).suggestedFilename(), "tab.html");
   // Unsafe archive keeps previous results and reports the failure.
   const unsafe = zipSync({ "../escape.html": strToU8("bad") });
-  await page
-    .locator("#archive-input")
-    .setInputFiles({
-      name: "bad.zip",
-      mimeType: "application/zip",
-      buffer: Buffer.from(unsafe),
-    });
+  await page.locator("#archive-input").setInputFiles({
+    name: "bad.zip",
+    mimeType: "application/zip",
+    buffer: Buffer.from(unsafe),
+  });
   await page.waitForFunction(() =>
     document
       .getElementById("analysis-status")

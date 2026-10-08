@@ -1,0 +1,9 @@
+{
+  "manifest_version": 3,
+  "name": "STYLE FORGE — 비주얼 편집기",
+  "version": "1.2.0",
+  "description": "실제 쇼핑몰 요소를 클릭하여 디자인을 임시 편집하고 수정 CSS를 추출합니다.",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "action": { "default_title": "STYLE FORGE 편집기 열기" },
+  "background": { "service_worker": "background.js" }
+}

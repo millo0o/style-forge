@@ -2,3 +2,4 @@ node_modules/
 test-results/
 *.tar.gz
 *.tgz
+!extension/style-forge-extension.zip
