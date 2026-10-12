@@ -365,7 +365,7 @@ function showRequest(r) {
       root.append(iframe);
       iframe.scrollIntoView({ block: "start" });
       iframe.addEventListener("load", async () => {
-        const { mountEditor } = await import("../vendor/visual-editor.js");
+        const { mountEditor } = await import("../vendor/visual-editor.js?v=1.3.0");
         mountEditor(iframe.contentDocument, { reviewPacket: reviewPacket(r) });
       });
     });

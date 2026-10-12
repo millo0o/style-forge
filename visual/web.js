@@ -1,4 +1,4 @@
-import { mountEditor } from "../vendor/visual-editor.js";
+import { mountEditor } from "../vendor/visual-editor.js?v=1.3.0";
 const frame = document.getElementById("visual-demo-frame");
 let editor;
 function mount() {
