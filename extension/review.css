@@ -1,0 +1,415 @@
+.collab-workspace {
+  padding: 32px 30px;
+  background: #fafbfc;
+  min-height: 85vh;
+  font:
+    13px Arial,
+    "Malgun Gothic",
+    sans-serif;
+  color: #292c36;
+}
+.collab-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+.collab-heading h1 {
+  font-size: 26px;
+  letter-spacing: -1px;
+  margin: 12px 0;
+}
+.collab-heading p {
+  color: #9599a5;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.collab-heading a {
+  white-space: nowrap;
+}
+.collab-banner {
+  padding: 13px 16px;
+  background: #f2effa;
+  border: 1px solid #e7e2f1;
+  border-radius: 7px;
+  color: #9283b1;
+  font-size: 11px;
+  margin: 22px 0;
+}
+.collab-connect,
+.collab-userbar,
+.collab-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.collab-connect label {
+  font-size: 11px;
+  color: #8c91a0;
+  min-width: 140px;
+}
+.collab-api-wrap {
+  flex: 1;
+}
+.collab-workspace input,
+.collab-workspace select,
+.collab-workspace textarea {
+  font:
+    12px Arial,
+    sans-serif;
+  background: #fff;
+  color: #555b69;
+  border: 1px solid #e4e6ee;
+  border-radius: 6px;
+  padding: 10px;
+  width: 100%;
+  margin-top: 7px;
+}
+.collab-workspace textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+.collab-workspace h2 {
+  font-size: 13px;
+  margin: 0 0 18px;
+}
+.collab-workspace h3 {
+  font-size: 12px;
+}
+.collab-workspace button {
+  cursor: pointer;
+}
+.collab-workspace .button {
+  background: white;
+  color: #696c7b;
+  border: 1px solid #e2e4ee;
+  padding: 10px 15px;
+  border-radius: 6px;
+  font:
+    11px Arial,
+    sans-serif;
+}
+.collab-workspace .dark {
+  background: #292b35;
+  color: white;
+  border-color: #292b35;
+}
+.collab-workspace .text-button {
+  border: 0;
+  background: none;
+  color: #8c809f;
+  padding: 6px;
+  font-size: 11px;
+}
+.collab-workspace button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+#collab-login {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-top: 15px;
+}
+#collab-login label {
+  flex: 1;
+  color: #9a9daa;
+  font-size: 11px;
+}
+.collab-userbar {
+  padding: 16px 0;
+  font-size: 11px;
+  color: #9398a6;
+}
+.collab-userbar span {
+  flex: 1;
+}
+#collab-status {
+  color: #86739e;
+  font-size: 11px;
+  line-height: 1.8;
+  margin-bottom: 13px;
+  min-height: 18px;
+}
+.collab-toolbar {
+  margin-bottom: 20px;
+}
+.collab-toolbar label {
+  min-width: 170px;
+  color: #9398a6;
+  font-size: 10px;
+}
+.collab-toolbar > input {
+  flex: 1;
+  min-width: 150px;
+}
+.collab-toolbar > select {
+  width: 160px;
+}
+.collab-box {
+  border: 1px solid #e6e8f0;
+  border-radius: 8px;
+  padding: 18px;
+  background: white;
+  margin: 18px 0;
+}
+.collab-box p,
+.collab-box li {
+  color: #969aa6;
+  font-size: 11px;
+  line-height: 1.9;
+}
+.collab-box summary {
+  font-size: 12px;
+  color: #888093;
+  cursor: pointer;
+}
+.collab-file {
+  position: relative;
+  display: inline-block;
+  border: 1px dashed #d9d3e9;
+  color: #9a8baa;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 11px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.collab-file input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+}
+.collab-file:focus-within {
+  outline: 2px solid #a396cf;
+}
+#collab-submit-form .button {
+  margin-top: 10px;
+}
+#collab-draft-info {
+  font-size: 11px;
+  color: #97909f;
+  margin-top: 10px;
+}
+.collab-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  border: 1px solid #e4e7f0;
+  border-radius: 9px;
+  background: white;
+  overflow: hidden;
+}
+.collab-list {
+  padding: 20px;
+  border-right: 1px solid #e8eaf1;
+}
+.collab-list h2 span {
+  color: #a9acb5;
+  font-weight: 400;
+  font-size: 10px;
+}
+#collab-requests {
+  max-height: 700px;
+  overflow: auto;
+}
+.collab-request {
+  display: block;
+  border: 1px solid #ececf3;
+  border-radius: 7px;
+  background: white;
+  width: 100%;
+  padding: 14px;
+  text-align: left;
+  margin: 10px 0;
+}
+.collab-request.selected {
+  background: #f8f6ff;
+  border-color: #d9d1f0;
+}
+.collab-request strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #716a82;
+}
+.collab-request small {
+  display: block;
+  color: #a0a1ac;
+  font-size: 10px;
+  line-height: 1.8;
+  margin-top: 8px;
+  overflow-wrap: anywhere;
+}
+.collab-request p {
+  font-size: 10px;
+  line-height: 1.7;
+  color: #a4a4b0;
+  overflow-wrap: anywhere;
+  margin: 6px 0;
+}
+.collab-detail {
+  padding: 24px;
+  min-width: 0;
+}
+.collab-detail h2 {
+  font-size: 18px;
+  margin: 0 0 10px;
+}
+.collab-detail .meta {
+  color: #a4a3b0;
+  font-size: 10px;
+  line-height: 1.8;
+}
+.collab-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
+.collab-item {
+  border: 1px solid #e8e7f1;
+  border-radius: 7px;
+  padding: 15px;
+  margin-top: 13px;
+  overflow-wrap: anywhere;
+}
+.collab-item strong {
+  font-size: 12px;
+  color: #736c83;
+}
+.collab-item .badge {
+  font-size: 9px;
+  background: #f1edf8;
+  color: #9684ae;
+  border-radius: 4px;
+  padding: 4px 6px;
+  margin-left: 8px;
+}
+.collab-item code {
+  display: block;
+  font-size: 11px;
+  color: #9b8eb0;
+  margin: 10px 0;
+}
+.collab-item .page-link {
+  font-size: 10px;
+  color: #8c85a8;
+  text-decoration: none;
+  display: block;
+  margin: 8px 0;
+}
+.collab-item table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
+  line-height: 1.9;
+}
+.collab-item th {
+  text-align: left;
+  color: #a3a1ae;
+  font-weight: 400;
+  padding: 6px;
+}
+.collab-item td {
+  padding: 6px;
+  border-top: 1px solid #f0eff5;
+  color: #8f8b9c;
+  overflow-wrap: anywhere;
+}
+.collab-item td:last-child {
+  color: #8e70ac;
+}
+.collab-review-controls {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.collab-review-controls select {
+  width: 130px;
+}
+.collab-review-controls input {
+  flex: 1;
+  min-width: 120px;
+}
+.collab-review-controls button {
+  margin-top: 7px;
+}
+.collab-empty {
+  padding: 35px 10px;
+  color: #adb0ba;
+  font-size: 12px;
+  text-align: center;
+}
+.collab-admin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.collab-admin-grid .button {
+  margin-top: 10px;
+}
+.collab-source {
+  font-size: 10px;
+  color: #a9a3b2;
+  margin-top: 8px;
+}
+.collab-workspace details ol {
+  padding-left: 20px;
+}
+.collab-demo-frame {
+  width: 100%;
+  height: 670px;
+  border: 1px solid #e4e7ee;
+  border-radius: 6px;
+  margin-top: 12px;
+}
+[hidden] {
+  display: none !important;
+}
+@media (max-width: 700px) {
+  .collab-workspace {
+    padding: 25px 16px;
+  }
+  .collab-heading {
+    flex-direction: column;
+  }
+  .collab-grid,
+  .collab-admin-grid {
+    grid-template-columns: 1fr;
+  }
+  .collab-list {
+    border-right: 0;
+    border-bottom: 1px solid #e9eaf1;
+  }
+  #collab-requests {
+    max-height: 300px;
+  }
+  #collab-login {
+    flex-wrap: wrap;
+  }
+  .collab-detail {
+    padding: 17px;
+  }
+  .collab-toolbar > select {
+    width: 100%;
+  }
+  .collab-heading h1 {
+    font-size: 23px;
+  }
+}
+.workspace-tabs {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.workspace-tabs button {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.collab-admin-grid select[multiple] {
+  height: 110px;
+}

@@ -1,3 +1,5 @@
+import { pageURL } from "../collaboration/schema.js";
+import { createReviewOverlay } from "./review.js";
 import styles from "./editor.css";
 import {
   PROPERTIES,
@@ -58,6 +60,8 @@ export function mountEditor(doc = document, options = {}) {
     paused = false,
     report = null,
     disposed = false;
+  const baselines = new Map();
+  let reviewOverlay = null;
   let history = new History(),
     state = history.current;
   const fields = new Map();
@@ -291,6 +295,7 @@ export function mountEditor(doc = document, options = {}) {
     importInput = el("input");
   importInput.type = "file";
   importInput.accept = ".json";
+  importInput.setAttribute("aria-label", "편집 JSON 불러오기");
   importLabel.append(importInput);
   const projectRow = el("div", "", "footer-actions");
   projectRow.append(save, load, exportProject);
@@ -299,6 +304,121 @@ export function mountEditor(doc = document, options = {}) {
   message.setAttribute("role", "status");
   message.setAttribute("aria-live", "polite");
   body.append(message);
+  const collaborationSection = el("section", "", "section");
+  collaborationSection.append(el("h3", "클라이언트 수정 요청"));
+  const submitReview = el(
+    "button",
+    options.onSubmit ? "검토 요청 보내기" : "검토 요청 파일",
+    "primary",
+  );
+  const reviewFile = el(
+      "label",
+      "홈페이지 표시 / 고객 요청 JSON 불러오기",
+      "file-picker",
+    ),
+    reviewInput = el("input");
+  reviewInput.type = "file";
+  reviewInput.accept = ".json";
+  reviewInput.setAttribute("aria-label", "홈페이지 표시 JSON");
+  reviewFile.append(reviewInput);
+  const showMarks = el("button", "수정 영역 표시 끄기");
+  showMarks.hidden = true;
+  collaborationSection.append(
+    submitReview,
+    el(
+      "p",
+      "요청에는 페이지 주소, 수정한 영역과 전후 값만 포함합니다. 스킨 파일 본문과 FTP 정보는 전송하지 않습니다.",
+      "hint",
+    ),
+    reviewFile,
+    showMarks,
+  );
+  body.insertBefore(collaborationSection, controls);
+  function submission() {
+    const pageUrl = pageURL(win.location.href);
+    return {
+      format: "style-forge-submission-v1",
+      items: state.changes.map((r) => {
+        const b = baselines.get(r.selector + "|" + r.media);
+        return {
+          ...r,
+          pageUrl,
+          important: r.important ?? state.important,
+          before: b?.before || {},
+          label: b?.label || r.selector,
+          sources: b?.sources || [],
+        };
+      }),
+    };
+  }
+  submitReview.addEventListener("click", async (event) => {
+    if (options.onSubmit && !event.isTrusted) return;
+    if (!state.changes.length) {
+      say("먼저 요소의 디자인을 변경하세요.");
+      return;
+    }
+    try {
+      if (options.onSubmit) {
+        await options.onSubmit(submission());
+        say(
+          "협업 검토함을 열었습니다. 클라이언트 계정으로 로그인 후 제목과 메모를 넣어 제출하세요.",
+        );
+      } else {
+        downloadText(
+          JSON.stringify(submission(), null, 2),
+          "style-forge-submission.json",
+          "application/json",
+        );
+        say("협업 검토함의 클라이언트 화면에서 요청 파일을 불러오세요.");
+      }
+    } catch (e) {
+      say("요청을 준비하지 못했습니다: " + e.message);
+    }
+  });
+  reviewOverlay = createReviewOverlay(doc, root, choose);
+  function loadReview(packet) {
+    const result = reviewOverlay.load(packet);
+    for (const i of result.items)
+      baselines.set(i.selector + "|" + i.media, {
+        before: i.before,
+        label: i.label,
+        sources: i.sources,
+      });
+    state = {
+      version: "1.2",
+      important: result.items.every((i) => i.important),
+      changes: result.items.map(
+        ({ selector, media, properties, important }) => ({
+          selector,
+          media,
+          properties,
+          important,
+        }),
+      ),
+    };
+    history.commit(state);
+    paused = false;
+    render();
+    refreshFields();
+    showMarks.hidden = false;
+    say(
+      `요청 ${result.items.length}개 영역 · 일치 ${result.total}개 요소 · 미확인 ${result.missing}개 · 표시 ${result.displayed}개. 임시 미리보기이며 운영 반영이 아닙니다.`,
+    );
+  }
+  reviewInput.addEventListener("change", async () => {
+    try {
+      const packet = await readJSON(reviewInput);
+      if (packet) loadReview(packet);
+    } catch (e) {
+      say("요청 표시 파일을 읽지 못했습니다: " + e.message);
+    }
+  });
+  showMarks.addEventListener("click", () => {
+    const visible = reviewOverlay.toggle();
+    showMarks.textContent = visible
+      ? "수정 영역 표시 끄기"
+      : "수정 영역 표시 켜기";
+  });
   const pageKey =
     "style-forge.visual.v1:" + win.location.origin + win.location.pathname;
   const storage = options.storage || {
@@ -327,6 +447,7 @@ export function mountEditor(doc = document, options = {}) {
     }
   }
   function draw() {
+    reviewOverlay?.draw();
     if (!selected?.isConnected) {
       outline.style.display = "none";
       return;
@@ -543,6 +664,22 @@ export function mountEditor(doc = document, options = {}) {
       say("최대 200개 범위까지 편집할 수 있습니다. 기존 변경을 정리하세요.");
       return;
     }
+    const baselineKey = selector + "|" + media;
+    let baseline = baselines.get(baselineKey);
+    if (!baseline) {
+      baseline = {
+        before: {},
+        label: selectedTitle.textContent,
+        sources: mapSources(selected, report)
+          .slice(0, 30)
+          .map(({ file, line }) => ({ file, line })),
+      };
+      baselines.set(baselineKey, baseline);
+    }
+    if (value !== null && !Object.hasOwn(baseline.before, name))
+      baseline.before[name] = win
+        .getComputedStyle(selected)
+        .getPropertyValue(name);
     state = updateProperty(state, selector, media, name, value);
     history.commit(state, selector + "|" + media + "|" + name);
     paused = false;
@@ -718,7 +855,11 @@ export function mountEditor(doc = document, options = {}) {
     }
   });
   importantInput.addEventListener("change", () => {
-    state = { ...state, important: importantInput.checked };
+    state = {
+      ...state,
+      important: importantInput.checked,
+      changes: state.changes.map(({ important, ...r }) => r),
+    };
     history.commit(state);
     render();
   });
@@ -875,6 +1016,7 @@ export function mountEditor(doc = document, options = {}) {
     if (disposed) return;
     disposed = true;
     observer.disconnect();
+    reviewOverlay?.clear();
     win.removeEventListener("click", onClick, true);
     doc.removeEventListener("pointermove", onPointer, true);
     doc.removeEventListener("keydown", onKey, true);
@@ -899,5 +1041,12 @@ export function mountEditor(doc = document, options = {}) {
   refreshFields();
   refreshSources();
   say("요소를 클릭해 편집을 시작하세요.");
-  return { host, destroy, choose, getState: () => structuredClone(state) };
+  if (options.reviewPacket) loadReview(options.reviewPacket);
+  return {
+    host,
+    destroy,
+    choose,
+    loadReview,
+    getState: () => structuredClone(state),
+  };
 }

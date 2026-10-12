@@ -133,13 +133,11 @@ try {
       },
     ],
   };
-  await frame
-    .locator('input[aria-label="스킨 분석 JSON 연결"]')
-    .setInputFiles({
-      name: "analysis.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(JSON.stringify(report)),
-    });
+  await frame.locator('input[aria-label="스킨 분석 JSON 연결"]').setInputFiles({
+    name: "analysis.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(report)),
+  });
   await frame
     .locator(".source-card strong")
     .filter({ hasText: "demo/css/main.css:25" })
@@ -203,40 +201,34 @@ try {
   await frame
     .getByRole("button", { name: "모든 변경 제거", exact: true })
     .click();
-  await frame
-    .locator("input[type=file]")
-    .nth(1)
-    .setInputFiles({
-      name: "edit.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(project),
-    });
+  await frame.locator('input[aria-label="편집 JSON 불러오기"]').setInputFiles({
+    name: "edit.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(project),
+  });
   await frame
     .locator(".status")
     .filter({ hasText: "편집 JSON을 불러왔습니다" })
     .waitFor();
   assert.equal(await getFont(), "48px");
   // Bad JSON must not replace the previous edit state.
-  await frame
-    .locator("input[type=file]")
-    .nth(1)
-    .setInputFiles({
-      name: "bad.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(
-        JSON.stringify({
-          state: {
-            changes: [
-              {
-                selector: "body",
-                media: "all",
-                properties: { background: "url(https://evil.invalid)" },
-              },
-            ],
-          },
-        }),
-      ),
-    });
+  await frame.locator('input[aria-label="편집 JSON 불러오기"]').setInputFiles({
+    name: "bad.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(
+      JSON.stringify({
+        state: {
+          changes: [
+            {
+              selector: "body",
+              media: "all",
+              properties: { background: "url(https://evil.invalid)" },
+            },
+          ],
+        },
+      }),
+    ),
+  });
   await frame
     .locator(".status")
     .filter({ hasText: "읽지 못했습니다" })

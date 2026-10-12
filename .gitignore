@@ -3,3 +3,8 @@ test-results/
 *.tar.gz
 *.tgz
 !extension/style-forge-extension.zip
+
+!connector/style-forge-mac.zip
+server-data/
+*.pem
+*.receipt.json

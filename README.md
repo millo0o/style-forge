@@ -91,3 +91,26 @@ npm run test:extension
 비주얼 테스트는 실제 Chromium에서 체험 화면과 공통 편집 코어를 검증합니다. 확장 테스트는 관리자 정책이 설치를 막으면 **SKIP**을 명시하며 통과로 간주하지 않습니다. 이 클라우드 환경에서는 확장 설치가 정책으로 차단되어 실제 확장 런타임 검증이 남습니다.
 
 설계와 후속 FTP 연결 계획: [v1.2 구조](docs/VISUAL_EDITOR_ARCHITECTURE.md), [FTP 커넥터 계획](docs/FTP_CONNECTOR_PLAN.md), [검증 보고서](docs/V1_2_VALIDATION.md).
+
+## v1.3 — 클라이언트 제출·담당자 검토·Mac 승인 반영
+
+**협업 검토함** 탭을 추가했습니다. 기본 로컬 체험에서 수정된 페이지 목록·전후 값·검토 상태와 수정 영역 표시를 확인할 수 있습니다. 실제 제출은 별도 협업 서버 모드에서 수행합니다.
+
+- 클라이언트 계정별 프로젝트와 자기 요청 접근
+- 여러 페이지의 수정안, 대표 요소 전후 값, 메모와 파일 위치 후보
+- 담당자 승인·반려·재수정 및 변경 영역 표시 JSON
+- 승인된 미적용 항목만 포함한 서명 패키지
+- macOS용 Node 적용 프로그램: FTP/FTPS·로컬 준비, 백업, 원본 hash, 승인 재확인, 페이지별 CSS 연결, 쓰기 검증과 복원
+
+**카페24 쇼핑몰의 HTML 스킨에 협업 저장 서버를 설치할 수는 없습니다.** 실제 클라이언트가 온라인으로 제출하려면 별도 Node.js 22 이상 서버와 HTTPS 주소가 필요합니다. 외부 서버/운영 FTP에는 아직 배포·접속하지 않았습니다. GitHub Pages만으로 로그인 API나 공동 요청 저장소가 생기는 것은 아닙니다.
+
+```sh
+npm run server:init  # 담당자 계정 비공개 입력
+npm run server      # 기본 localhost:4319
+npm run test:collaboration
+npm run test:ftp
+```
+
+FTP 테스트에는 Python `pyftpdlib==2.1.0`이 필요합니다. 로컬 fixture만 사용합니다. 이 환경에서는 `/tmp/style-forge-ftp-test`에 설치해 실행했습니다. 실제 Mac의 파일 선택 UI와 운영 Cafe24/FTPS 호환성은 추가 검증해야 합니다. 확장 설치 제한도 기존 클라우드 관리 정책에 의해 남아 있습니다.
+
+[설치·사용 안내](docs/COLLABORATION_SETUP.md) · [구조와 승인 범위](docs/COLLABORATION_ARCHITECTURE.md) · [검증 결과](docs/V1_3_VALIDATION.md).

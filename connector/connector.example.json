@@ -1,0 +1,15 @@
+{
+  "protocol": "ftps",
+  "host": "YOUR_FTP_HOST",
+  "port": 21,
+  "user": "YOUR_FTP_USER",
+  "root": "/YOUR_SKIN_ROOT",
+  "origin": "https://YOUR_SHOP_DOMAIN",
+  "layoutPath": "layout/basic/layout.html",
+  "layoutMode": "cafe24",
+  "outputPath": "mill/style-forge",
+  "publicBase": "/mill/style-forge",
+  "publicKeyFile": "/Users/YOUR_NAME/Downloads/style-forge-server-public.pem",
+  "approvalServer": "https://YOUR_COLLABORATION_SERVER",
+  "reviewEmail": "YOUR_REVIEWER_EMAIL"
+}

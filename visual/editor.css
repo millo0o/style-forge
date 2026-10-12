@@ -391,3 +391,39 @@ details {
     font-size: 9px;
   }
 }
+
+.review-mark {
+  position: fixed;
+  border: 2px dashed #ab79c8;
+  pointer-events: none;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background: #b487cf09;
+}
+.review-badge {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translateY(-100%);
+  pointer-events: auto;
+  font:
+    9px Arial,
+    sans-serif;
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: #a578c2;
+  color: white;
+  border: 0;
+  padding: 4px 6px;
+  border-radius: 4px 4px 0 0;
+}
+
+.panel {
+  z-index: 2;
+}
+.review-mark,
+.outline {
+  z-index: 1;
+}

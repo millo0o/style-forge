@@ -133,6 +133,9 @@ export function validateState(raw, doc) {
     }
     if (Object.keys(properties).length)
       changes.push({
+        ...(typeof change.important === "boolean"
+          ? { important: change.important }
+          : {}),
         selector: change.selector,
         media: change.media,
         properties,
@@ -163,7 +166,12 @@ export function exportCSS(state) {
       Object.entries(r.properties)
         .map(
           ([k, v]) =>
-            "  " + k + ": " + v + (state.important ? " !important" : "") + ";",
+            "  " +
+            k +
+            ": " +
+            v +
+            ((r.important ?? state.important) ? " !important" : "") +
+            ";",
         )
         .join("\n") +
       "\n}";

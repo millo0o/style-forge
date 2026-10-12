@@ -432,6 +432,7 @@ for (const b of document.querySelectorAll("[data-workspace]"))
     document.querySelector(".workspace-bar").hidden = !designer;
     $("skin-analyzer").hidden = workspace !== "analyzer";
     $("visual-workspace").hidden = workspace !== "visual";
+    $("collaboration-workspace").hidden = workspace !== "collaboration";
     $("save-project").hidden = !designer;
     $("download-top").hidden = !designer;
     for (const tab of document.querySelectorAll("[data-workspace]")) {

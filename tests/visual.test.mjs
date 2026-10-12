@@ -153,13 +153,13 @@ test("MV3 action injects only into the activated tab and handles restricted page
 });
 test("extension CSS API removes old patches and inserts USER origin CSS; rejects foreign messages", async () => {
   const calls = [];
-  let handler;
+  const handlers = [];
   const chrome = {
     runtime: {
       id: "own",
       onMessage: {
         addListener(fn) {
-          handler = fn;
+          handlers.push(fn);
         },
       },
     },
@@ -176,6 +176,7 @@ test("extension CSS API removes old patches and inserts USER origin CSS; rejects
   vm.runInNewContext(await readFile("extension/background.js", "utf8"), {
     chrome,
   });
+  const handler = handlers[0];
   const response = await new Promise((r) =>
     assert.equal(
       handler(

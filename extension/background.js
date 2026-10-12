@@ -59,3 +59,37 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   })().catch(() => sendResponse({ ok: false }));
   return true;
 });
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (
+    message?.type !== "style-forge-review-open" ||
+    sender.id !== chrome.runtime.id ||
+    !sender.tab?.id
+  )
+    return;
+  if (
+    message.payload?.format !== "style-forge-submission-v1" ||
+    !Array.isArray(message.payload.items) ||
+    message.payload.items.length > 200 ||
+    JSON.stringify(message.payload).length > 1500000
+  ) {
+    sendResponse({ ok: false });
+    return;
+  }
+  const expected = new URL(sender.tab.url);
+  expected.searchParams.sort();
+  const url = expected.origin + expected.pathname + expected.search;
+  if (message.payload.items.some((i) => i.pageUrl !== url)) {
+    sendResponse({ ok: false });
+    return;
+  }
+  (async () => {
+    const key = "draft-" + crypto.randomUUID();
+    await chrome.storage.session.set({ [key]: message.payload });
+    await chrome.tabs.create({
+      url: chrome.runtime.getURL("review.html") + "?draft=" + key,
+    });
+    sendResponse({ ok: true });
+  })().catch(() => sendResponse({ ok: false }));
+  return true;
+});

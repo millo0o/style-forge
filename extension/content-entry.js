@@ -23,4 +23,14 @@ function applyCSS(css) {
     });
   return queue;
 }
-mountEditor(document, { storage, applyCSS });
+mountEditor(document, {
+  storage,
+  applyCSS,
+  async onSubmit(payload) {
+    const r = await chrome.runtime.sendMessage({
+      type: "style-forge-review-open",
+      payload,
+    });
+    if (!r?.ok) throw Error("검토함을 열지 못했습니다.");
+  },
+});
